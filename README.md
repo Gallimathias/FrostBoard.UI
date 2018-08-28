@@ -1,4 +1,4 @@
-# frostboard.client
+# frostboard.ui
 
 ## Project setup
 ```
