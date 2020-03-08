@@ -1,0 +1,7 @@
+<div *ngFor="let group of Groups">
+  <p>{{ group.Name }}</p>
+  <div *ngFor="let forum of group.Forums">
+    <p>{{ forum.Name }}</p>
+    <p>{{ forum.Description }}</p>
+  </div>
+</div>
