@@ -1,0 +1,56 @@
+.post-card {
+  min-width: 90%;
+  margin-bottom: 40px;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-top: 32px;
+
+  display: grid;
+  grid-template-columns: 120px auto;
+  grid-template-areas: "meta post-content";
+
+  .meta-info {
+    grid-area: meta;
+    .info-text {
+      margin-top: 4px;
+    }
+  }
+
+  .content {
+    grid-area: post-content;
+    margin-top: 16px;
+    margin-left: 8px;
+
+    display: grid;
+    grid-template-rows: 16px auto;
+    row-gap: 16px;
+    grid-template-areas:
+      "content-header"
+      "content-data";
+
+    .content-header {
+      grid-area: content-header;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      color: rgba(232, 230, 227, 0.54);
+    }
+    .content-data {
+      grid-area: content-data;
+    }
+  }
+
+  mat-divider {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .avatar-image {
+    background-size: cover;
+    margin-top: 32px;
+    margin-right: 32px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 24px;
+  }
+}

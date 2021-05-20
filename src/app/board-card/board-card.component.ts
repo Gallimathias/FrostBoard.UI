@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IBoardCard } from '../model/IBoardCard';
+import { IBoardCardViewModel } from './i-board-card.view-model';
 
 @Component({
   selector: 'app-board-card',
@@ -8,7 +8,7 @@ import { IBoardCard } from '../model/IBoardCard';
 })
 export class BoardCardComponent implements OnInit {
 
-  @Input() Model: IBoardCard;
+  @Input() Model: IBoardCardViewModel;
   
   constructor() { }
 

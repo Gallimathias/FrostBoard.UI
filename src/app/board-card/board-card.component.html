@@ -19,14 +19,19 @@
     <mat-divider></mat-divider>
     <div class="details">
       <div>
-        <div mat-card-avatar class="avatar-image" [ngStyle]="{
-          'background-image': 'url(\'https:\/\/material.angular.io\/assets\/img\/examples\/shiba1.jpg\')'
-
-        }"></div>
+        <div
+          mat-card-avatar
+          class="avatar-image"
+          [ngStyle]="{
+            'background-image': 'url(\'' + Model.AvatarUrl + '\')'
+          }"
+        ></div>
       </div>
       <div class="meta">
-        <h3>Was ist überhaupt Virtual States?</h3>
-        <mat-card-subtitle>Virtual States - 26. April 2020</mat-card-subtitle>
+        <h3>{{ Model.LastTopic }}</h3>
+        <mat-card-subtitle
+          >{{ Model.LastUser }} - {{ Model.LastDate | date:'mediumDate'}}</mat-card-subtitle
+        >
       </div>
     </div>
   </mat-card-content>

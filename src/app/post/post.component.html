@@ -1,0 +1,23 @@
+<mat-card class="post-card">
+  <div class="meta-info">
+    <div
+      mat-card-avatar
+      class="avatar-image"
+      [ngStyle]="{
+        'background-image': 'url(\'' + Model.AvatarUrl + '\')'
+      }"
+    ></div>
+    <div>{{ Model.User }}</div>
+    <mat-card-subtitle class="info-text"
+      >{{ Model.PostCount }} Beiträge
+    </mat-card-subtitle>
+  </div>
+  <div class="content">
+    <mat-card-header class="content-header">
+      <div>{{ Model.Date | date: "mediumDate" }}</div>
+    </mat-card-header>
+    <mat-card-content class="content-data">
+      <div [innerHTML]="Model.Content"></div>
+    </mat-card-content>
+  </div>
+</mat-card>

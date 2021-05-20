@@ -16,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerRailModule } from 'angular-material-rail-drawer';
+import { ThreadComponent } from './thread/thread.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { DrawerRailModule } from 'angular-material-rail-drawer';
     BoardCardComponent,
     CardListComponent,
     TopBarComponent,
+    ThreadComponent,
+    PostComponent,
   ],
   imports: [
     //Angular

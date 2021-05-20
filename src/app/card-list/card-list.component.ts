@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IBoardCard } from '../model/IBoardCard';
-import { ICardList } from '../model/ICardList';
+import { ICardListViewModel } from './i-card-list.view-model';
 
 @Component({
   selector: 'app-card-list',
@@ -8,7 +7,7 @@ import { ICardList } from '../model/ICardList';
   styleUrls: ['./card-list.component.scss']
 })
 export class CardListComponent implements OnInit {  
-  @Input() Model: ICardList;
+  @Input() Model: ICardListViewModel;
   constructor() { }
 
   ngOnInit(): void {
