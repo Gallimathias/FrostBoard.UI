@@ -1,4 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { map, publish, share, tap } from 'rxjs/operators';
+import { IPage } from '../paging/i-page';
+import { Paginator } from '../paging/paginator';
+import { IPostViewModel } from '../post/i-post.view-model';
+import { PostDataService } from '../services/post-data.service';
 import { IThreadViewModel } from './i-thread.view-model';
 
 @Component({
@@ -6,46 +21,87 @@ import { IThreadViewModel } from './i-thread.view-model';
   templateUrl: './thread.component.html',
   styleUrls: ['./thread.component.scss'],
 })
-export class ThreadComponent implements OnInit {
+export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild('scrollframe', { static: false }) scrollFrame: ElementRef;
+  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+
+  private pageChanged = new Subject<PageEvent>();
+  private sizeChanged = new Subject<number>();
+  private scrollContainer: Element;
+
   Model: IThreadViewModel = {
-    Posts: [
-      {
-        Content: `<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>   
-        <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>   
-        <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>   
-        <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</p>`,
-        Date: new Date(2021, 3, 11),
-        AvatarUrl:
-          'https://www.virtual-states.de/wcf/images/avatars/18/307-18508319b76ee25244556d6bcd85bc84069b1c27.png',
-        PostCount: 359,
-        User: 'Ace Industries',
-      },
-      {
-        Content: `<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>   
-        <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>   
-        <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>   
-        <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</p>`,
-        Date: new Date(2021, 3, 11),
-        AvatarUrl:
-          'https://www.virtual-states.de/wcf/images/avatars/18/307-18508319b76ee25244556d6bcd85bc84069b1c27.png',
-        PostCount: 359,
-        User: 'Ace Industries',
-      },
-      {
-        Content: `<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>   
-        <p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>   
-        <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>   
-        <p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer</p>`,
-        Date: new Date(2021, 3, 11),
-        AvatarUrl:
-          'https://www.virtual-states.de/wcf/images/avatars/18/307-18508319b76ee25244556d6bcd85bc84069b1c27.png',
-        PostCount: 359,
-        User: 'Ace Industries',
-      },
-    ],
+    PageChanged: this.pageChanged,
+    Paginator: Paginator.from({ Total: 0, Size: 10, Length: 1 }),
+    Posts: [],
   };
+  private readonly subscriptions: Subscription;
 
-  constructor() {}
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: PostDataService
+  ) {
+    this.subscriptions = new Subscription();
 
-  ngOnInit(): void {}
+    console.log('Ctor call');
+    this.Model.CurrentPage = new PageEvent();
+    this.Model.CurrentPage.pageIndex = 0;
+
+    let pageChanged = this.pageChanged.pipe(
+      map((pageChanged) => {
+        return {
+          Index: pageChanged.pageIndex,
+          Size: pageChanged.pageSize,
+        } as IPage;
+      }),
+      tap((v) => console.log('PageChanged'))
+    );
+
+    let dataSubscription = dataService
+      .Get(pageChanged)
+      .pipe(tap((v) => console.log('New View')))
+      .subscribe((page) => (this.Model.Posts = page.Data));
+
+    let paginatorSubscription = dataService
+      .Paginate(this.sizeChanged)
+      .pipe(tap((v) => console.log('New Pagination')))
+      .subscribe(
+        (paginator) => 
+        {
+          this.Model.Paginator = Paginator.from(paginator);
+          this.Model.CurrentPage.pageSize = this.Model.Paginator.Size;
+          this.OnPageChanged(this.Model.CurrentPage);
+        }
+      );
+
+    this.subscriptions.add(dataSubscription);
+    this.subscriptions.add(paginatorSubscription);
+  }
+
+  ngOnInit(): void {
+    this.sizeChanged.next(this.Model.Paginator.Size);
+  }
+
+  ngOnDestroy(): void {
+    this.pageChanged.complete();
+    this.subscriptions.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.scrollContainer = this.scrollFrame.nativeElement as Element;
+  }
+
+  public OnPageChanged($event: PageEvent) {
+    console.log('page changed');
+    this.Model.CurrentPage = $event;
+    this.pageChanged.next($event);
+  }
+
+  public OnAddButtonClick() {
+    this.paginator.lastPage();
+    this.scrollContainer.scroll({
+      top: this.scrollContainer.scrollHeight,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
 }

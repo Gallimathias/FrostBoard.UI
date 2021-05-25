@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -10,12 +10,12 @@ import { BoardService } from '../services/board.service';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnDestroy {
   Model: IBoardViewModel = {
     Id: 0,
     CardLists: [],
   };
-  private logIds: Subscription;
+  private readonly logIds: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,5 +30,7 @@ export class BoardComponent implements OnInit {
       .subscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.logIds.unsubscribe();
+  }
 }

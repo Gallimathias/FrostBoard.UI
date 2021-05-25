@@ -1,3 +1,41 @@
 <div class="thread">
-    <app-post *ngFor="let post of Model.Posts" [Model]=post></app-post>
+  <div class="thread-header">
+    <button
+      class="navigation"
+      mat-icon-button
+      color="primary"
+      aria-label="Back to threads"
+      [routerLink]="['/board', 0]"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="primary"
+      aria-label="Add Post"
+      (click)="OnAddButtonClick()"
+    >
+      <mat-icon>post_add</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      color="primary"
+      aria-label="Edit thread"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+    <span class="spacer"></span>
+    <mat-paginator
+      #paginator
+      [length]="Model.Paginator.Length"
+      [pageSize]="Model.Paginator.Size"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="OnPageChanged($event)"
+    >
+    </mat-paginator>
+  </div>
+  <div class="thread-container" #scrollframe>
+    <app-post *ngFor="let post of Model.Posts" [Model]="post"></app-post>
+    <app-editor></app-editor>
+  </div>
 </div>
