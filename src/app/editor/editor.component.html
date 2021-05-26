@@ -1,8 +1,15 @@
-<mat-card>
-  <mat-card-header>
-    <div>Toolbar!</div>
-  </mat-card-header>
-  <mat-card-content>
-    <div #richtext contenteditable="true" (input)="OnInputChanged($event)">Start Typing here!</div>
-  </mat-card-content>
+<mat-card class="editor-card">
+  <div
+    #editor_element
+    id="test12"
+    contenteditable="true"
+    class="content"
+    (input)="OnInputChanged($event)"
+  >
+    Please insert your text here!
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
 </mat-card>
