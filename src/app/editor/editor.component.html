@@ -1,15 +1,30 @@
 <mat-card class="editor-card">
-  <div
-    #editor_element
-    id="test12"
-    contenteditable="true"
-    class="content"
-    (input)="OnInputChanged($event)"
-  >
-    Please insert your text here!
-    <br>
-    <br>
-    <br>
-    <br>
-  </div>
+  <mat-card-header>
+    <button
+      (click)="editor.chain().focus().toggleBold().run()"
+      [ngClass]="{ 'is-Active': editor.isActive('bold') }"
+    >
+      <mat-icon class="icon">format_bold</mat-icon>
+    </button>
+    <button
+      (click)="editor.chain().focus().toggleItalic().run()"
+      [ngClass]="{ 'is-Active': editor.isActive('italic') }"
+    >
+      <mat-icon class="icon">format_italic</mat-icon>
+    </button>
+    <button
+      (click)="editor.chain().focus().toggleUnderline().run()"
+      [ngClass]="{ 'is-Active': editor.isActive('underline') }"
+    >
+      <mat-icon class="icon">format_underline</mat-icon>
+    </button>
+    <button
+      (click)="editor.chain().focus().toggleStrike().run()"
+      [ngClass]="{ 'is-Active': editor.isActive('strike') }"
+    >
+      <mat-icon class="icon">format_strikethrough</mat-icon>
+    </button>
+  </mat-card-header>
+  <tiptap-editor [editor]="editor"></tiptap-editor>
+  <button (click)="OnSave()">Save</button>
 </mat-card>

@@ -1,87 +1,71 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
-import DOMPurify from 'dompurify';
+import { Component, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { ignoreElements, map, tap } from 'rxjs/operators';
-import { IRange } from './i-range';
+import DOMPurify from 'dompurify';
+import TurndownService from 'turndown';
+import {gfm} from 'joplin-turndown-plugin-gfm';
+import StarterKit from '@tiptap/starter-kit';
+import { Editor } from '@tiptap/core';
+import Image from '@tiptap/extension-image';
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import Underline from '@tiptap/extension-underline';
 
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
 })
-export class EditorComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('editor_element', { static: false }) editorElementRef: ElementRef;
-
+export class EditorComponent implements OnDestroy {
   private readonly contentSubject = new Subject<string>();
   private readonly subscription: Subscription;
-  private editorElement: HTMLDivElement;
+  public editor: Editor = new Editor({
+    extensions: [StarterKit, Image, Table, TableRow, TableCell, TableHeader, Underline],
+    content: '<p>Please start typing here!</p>',
+  });
+
+  private readonly turnDownService: TurndownService = new TurndownService();
 
   constructor() {
     this.subscription = this.contentSubject
-      .pipe(map((content) => DOMPurify.sanitize(content) as string))
-      .subscribe((content) => this.setElementContent(content));
+      .pipe(map((content: string) => DOMPurify.sanitize(content) as string))
+      .subscribe((content: string) => {});
+
+    this.editor
+      .chain()
+      .setContent('<p>Please <b>start</b> typing here!</p>')
+      .run();
+
+    this.turnDownService.use(gfm);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.editor.destroy();
   }
 
-  ngAfterViewInit(): void {
-    this.editorElement = this.editorElementRef.nativeElement;
+  public OnSave(): void {
+    let currentContent = this.editor.getHTML();
+    let jsonContent = this.editor.getJSON();
+    console.log('HTML Content: ' + currentContent);
+    console.log('JSON Content: ' + jsonContent)
+    let markdown = this.turnDownService.turndown(currentContent);
+    console.log('Markdown Result: ' + markdown);
+  }
+
+  public OnTableInsert(): void {
+    this.editor
+      .chain()
+      .focus()
+      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+      .run();
   }
 
   public OnInputChanged($event: InputEvent) {
-    let content = this.editorElement.innerHTML;
-    console.log('Inject: ' + content);
-    this.contentSubject.next(content);
-  }
-
-  private setElementContent(content: string) {
-    let currentRange = this.getCaretIndex(this.editorElement);
-    if (!currentRange) return;
-
-    console.log('Result: ' + content);
-    this.editorElement.innerHTML = content;
-    console.log('HTML: ' + this.editorElement.innerHTML);
-    // this.editorElement.focus();
-
-    // let range = document.createRange();
-    let selection = window.getSelection();
-    let range = selection.getRangeAt(0);
-
-    range.setStart(currentRange.startContainer, currentRange.startOffset);
-    range.setEnd(currentRange.endContainer, currentRange.endOffset);
-    range.collapse(true);
-
-    selection.addRange(range);
-    // this.editorElement.focus();
-    // range.detach();
-  }
-
-  private getCaretIndex(element: HTMLElement): IRange {
-    let lastRange: IRange;
-    if (window.getSelection) {
-      const selection = window.getSelection();
-      // Check if there is a selection (i.e. cursor in place)
-      if (selection.rangeCount != 0) {
-        // Store the original range
-        const range = selection.getRangeAt(0);
-
-        return {
-          range: range,
-          endContainer: range.endContainer,
-          endOffset: range.endOffset,
-          startContainer: range.startContainer,
-          startOffset: range.startOffset,
-        };
-      }
-    }
-    return lastRange;
+    // let content = this.editorElement.innerHTML;
+    // console.log('Inject: ' + content);
+    // this.contentSubject.next(content);
   }
 }

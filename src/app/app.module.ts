@@ -19,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 //Custom
 import { DrawerRailModule } from 'angular-material-rail-drawer';
+import { NgxTiptapModule } from 'ngx-tiptap';
 
 //Declarations
 import { BoardComponent } from './board/board.component';
@@ -58,6 +59,7 @@ import { EditorComponent } from './editor/editor.component';
 
     //Custom
     DrawerRailModule,
+    NgxTiptapModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
