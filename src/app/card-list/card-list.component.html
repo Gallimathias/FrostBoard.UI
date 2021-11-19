@@ -1,8 +1,8 @@
 <div class="card-list">
-  <h2 matSubheader>{{ Model.Title }}</h2>
+  <h2 matSubheader>{{ Model?.Title }}</h2>
   <div class="list-content">
     <app-board-card
-    *ngFor="let boardCard of Model.BoardCards"
+    *ngFor="let boardCard of Model?.BoardCards"
     [Model]="boardCard"
     [routerLink]="['/board', boardCard.Id]"
     ></app-board-card>

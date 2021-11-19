@@ -8,7 +8,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 })
 export class TopBarComponent implements OnInit {
 
-  @Input() drawer: MatDrawer;
+  @Input() drawer: MatDrawer | undefined;
   public showFiller: boolean = false;
   constructor() { }
 

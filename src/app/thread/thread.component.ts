@@ -6,13 +6,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { map, publish, share, tap } from 'rxjs/operators';
+import { EditorDialogComponent } from '../editor/editor-dialog/editor-dialog.component';
 import { IPage } from '../paging/i-page';
 import { Paginator } from '../paging/paginator';
-import { IPostViewModel } from '../post/i-post.view-model';
 import { PostDataService } from '../services/post-data.service';
 import { IThreadViewModel } from './i-thread.view-model';
 
@@ -22,12 +23,12 @@ import { IThreadViewModel } from './i-thread.view-model';
   styleUrls: ['./thread.component.scss'],
 })
 export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
-  @ViewChild('scrollframe', { static: false }) scrollFrame: ElementRef;
-  @ViewChild('paginator', { static: false }) paginator: MatPaginator;
+  // @ViewChild('scrollframe', { static: false }) scrollFrame: ElementRef;
+  // @ViewChild('paginator', { static: false }) paginator: MatPaginator;
 
   private pageChanged = new Subject<PageEvent>();
   private sizeChanged = new Subject<number>();
-  private scrollContainer: Element;
+  // private scrollContainer: Element;
 
   Model: IThreadViewModel = {
     PageChanged: this.pageChanged,
@@ -37,6 +38,7 @@ export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
   private readonly subscriptions: Subscription;
 
   constructor(
+    public dialog: MatDialog,
     private route: ActivatedRoute,
     private dataService: PostDataService
   ) {
@@ -64,14 +66,14 @@ export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
     let paginatorSubscription = dataService
       .Paginate(this.sizeChanged)
       .pipe(tap((v) => console.log('New Pagination')))
-      .subscribe(
-        (paginator) => 
-        {
-          this.Model.Paginator = Paginator.from(paginator);
-          this.Model.CurrentPage.pageSize = this.Model.Paginator.Size;
-          this.OnPageChanged(this.Model.CurrentPage);
-        }
-      );
+      .subscribe((paginator) => {
+        this.Model.Paginator = Paginator.from(paginator);
+
+        if (!this.Model.CurrentPage) return;
+
+        this.Model.CurrentPage.pageSize = this.Model.Paginator.Size;
+        this.OnPageChanged(this.Model.CurrentPage);
+      });
 
     this.subscriptions.add(dataSubscription);
     this.subscriptions.add(paginatorSubscription);
@@ -87,7 +89,7 @@ export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.scrollContainer = this.scrollFrame.nativeElement as Element;
+    // this.scrollContainer = this.scrollFrame.nativeElement as Element;
   }
 
   public OnPageChanged($event: PageEvent) {
@@ -97,11 +99,17 @@ export class ThreadComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   public OnAddButtonClick() {
-    this.paginator.lastPage();
-    this.scrollContainer.scroll({
-      top: this.scrollContainer.scrollHeight,
-      left: 0,
-      behavior: 'smooth',
-    });
+    // this.paginator.lastPage();
+    // this.scrollContainer.scroll({
+    //   top: this.scrollContainer.scrollHeight,
+    //   left: 0,
+    //   behavior: 'smooth',
+    // });
+    let sub = this.dialog
+      .open(EditorDialogComponent, { data: { content: 'This is a post' } })
+      .afterClosed()
+      .pipe(tap((value) => console.log('This after close ' + value)))
+      .subscribe();
+    this.subscriptions.add(sub);
   }
 }

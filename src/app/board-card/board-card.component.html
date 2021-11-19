@@ -1,21 +1,21 @@
 <mat-card class="board-card">
   <img
-    *ngIf="Model.HeaderImage"
+    *ngIf="Model?.HeaderImage"
     class="header"
     mat-card-image
     alt="Header image of BoardCard"
     [src]="Model.HeaderImage"
   />
-  <div class="header" mat-card-image *ngIf="!Model.HeaderImage">
+  <div class="header" mat-card-image *ngIf="!Model?.HeaderImage">
     <mat-icon>forum</mat-icon>
   </div>
-  <mat-card-title>{{ Model.Name }}</mat-card-title>
+  <mat-card-title>{{ Model?.Name }}</mat-card-title>
   <mat-card-subtitle
-    >{{ Model.Topics }} Themen
-    {{ Model.Contributions }} Beiträge</mat-card-subtitle
+    >{{ Model?.Topics }} Themen
+    {{ Model?.Contributions }} Beiträge</mat-card-subtitle
   >
   <mat-card-content>
-    <p class="description">{{ Model.Description }}</p>
+    <p class="description">{{ Model?.Description }}</p>
     <mat-divider></mat-divider>
     <div class="details">
       <div>
@@ -23,14 +23,14 @@
           mat-card-avatar
           class="avatar-image"
           [ngStyle]="{
-            'background-image': 'url(\'' + Model.AvatarUrl + '\')'
+            'background-image': 'url(\'' + Model?.AvatarUrl + '\')'
           }"
         ></div>
       </div>
       <div class="meta">
-        <h3>{{ Model.LastTopic }}</h3>
+        <h3>{{ Model?.LastTopic }}</h3>
         <mat-card-subtitle
-          >{{ Model.LastUser }} - {{ Model.LastDate | date:'mediumDate'}}</mat-card-subtitle
+          >{{ Model?.LastUser }} - {{ Model?.LastDate | date:'mediumDate'}}</mat-card-subtitle
         >
       </div>
     </div>

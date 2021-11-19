@@ -8,7 +8,7 @@ import { IPostViewModel } from './i-post.view-model';
 })
 export class PostComponent implements OnInit {
 
-  @Input() Model: IPostViewModel;
+  @Input() Model: IPostViewModel | undefined;
 
   constructor() { }
 

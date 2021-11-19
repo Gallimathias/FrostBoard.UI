@@ -25,6 +25,12 @@
       <mat-icon class="icon">format_strikethrough</mat-icon>
     </button>
   </mat-card-header>
-  <tiptap-editor [editor]="editor"></tiptap-editor>
-  <button (click)="OnSave()">Save</button>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <tiptap-editor [editor]="editor"></tiptap-editor>
+  </mat-card-content>
+  <!-- <mat-divider></mat-divider> -->
+  <!-- <mat-card-footer>
+    <button (click)="OnSave()">Save</button>
+  </mat-card-footer> -->
 </mat-card>

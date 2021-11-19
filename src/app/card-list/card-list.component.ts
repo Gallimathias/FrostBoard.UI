@@ -7,7 +7,7 @@ import { ICardListViewModel } from './i-card-list.view-model';
   styleUrls: ['./card-list.component.scss']
 })
 export class CardListComponent implements OnInit {  
-  @Input() Model: ICardListViewModel;
+  @Input() Model: ICardListViewModel | undefined;
   constructor() { }
 
   ngOnInit(): void {

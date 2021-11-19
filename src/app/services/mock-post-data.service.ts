@@ -47,7 +47,7 @@ export class MockPostDataService extends DataService<IPostViewModel, number> {
     },
   ];
   constructor() {
-    super(null);
+    super(undefined);
   }
 
   public Paginate(sizes: Observable<number>): Observable<IPaginator>{

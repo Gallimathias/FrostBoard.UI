@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 //App Core
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 //Custom
 import { DrawerRailModule } from 'angular-material-rail-drawer';
@@ -29,6 +31,7 @@ import { CardListComponent } from './card-list/card-list.component';
 import { PostComponent } from './post/post.component';
 import { BoardCardComponent } from './board-card/board-card.component';
 import { EditorComponent } from './editor/editor.component';
+import { EditorDialogComponent } from './editor/editor-dialog/editor-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,12 +43,14 @@ import { EditorComponent } from './editor/editor.component';
     ThreadComponent,
     PostComponent,
     EditorComponent,
+    EditorDialogComponent,
   ],
   imports: [
     //Angular
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     //Material
     MatListModule,
@@ -56,6 +61,7 @@ import { EditorComponent } from './editor/editor.component';
     MatSidenavModule,
     MatPaginatorModule,
     MatButtonModule,
+    MatDialogModule,
 
     //Custom
     DrawerRailModule,

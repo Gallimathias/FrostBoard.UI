@@ -1,34 +1,54 @@
 .editor-card {
   min-width: 90%;
-  margin-bottom: 40px;
-  margin-left: 32px;
-  margin-right: 32px;
-  margin-top: 32px;
+  // margin-bottom: 40px;
+  // margin-left: 32px;
+  // margin-right: 32px;
+  // margin-top: 32px;
 
-  .content{
+  display: flex;
+  flex-direction: column;
+
+  .content {
     margin-top: 16px;
     margin-left: 8px;
     cursor: text;
   }
 
-  mat-card-header{
-    button{
+  .ProseMirror {
+    min-height: 8rem !important;
+  }
+
+  .mat-divider {
+    position: unset;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  mat-card-header {
+    button {
       border: 0;
-      border-radius: .1875rem;
+      border-radius: 0.1875rem;
       cursor: pointer;
       display: inline-block;
       height: 1.75rem;
       width: 1.75rem;
-      opacity: .6;
+      opacity: 0.6;
       padding: 0;
 
-      .icon{
+      .icon {
         left: 50%;
         top: 50%;
         width: 1.5rem;
         height: 1.5rem;
       }
     }
-    
+  }
+
+  mat-card-content {
+    display: flex;
+  }
+
+  mat-card-footer {
+    display: flex;
   }
 }
