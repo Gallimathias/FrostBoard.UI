@@ -40,7 +40,7 @@
     "@types/prosemirror-state": "1.2.7",
     "@types/prosemirror-view": "1.19.1",
     "@types/turndown": "^5.0.1",
-    "angular-material-rail-drawer": "^0.0.6",
+    "angular-material-rail-drawer": "^1.0.0",
     "dompurify": "^2.3.3",
     "ngx-tiptap": "^3.0.4",
     "rxjs": "~7.4.0",

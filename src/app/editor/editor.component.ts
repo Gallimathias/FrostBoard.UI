@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 //@ts-ignore turndown has no type declaration yet
 import TurndownService from 'turndown';
 //@ts-ignore turndown has no type declaration yet
-import { gfm } from 'joplin-turndown-plugin-gfm';
+import { gfm } from '@joplin/turndown-plugin-gfm';
 import StarterKit from '@tiptap/starter-kit';
 import { Editor } from '@tiptap/core';
 import Image from '@tiptap/extension-image';
