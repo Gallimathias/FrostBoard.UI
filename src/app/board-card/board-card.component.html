@@ -4,7 +4,7 @@
     class="header"
     mat-card-image
     alt="Header image of BoardCard"
-    [src]="Model.HeaderImage"
+    [src]="Model?.HeaderImage ?? ''"
   />
   <div class="header" mat-card-image *ngIf="!Model?.HeaderImage">
     <mat-icon>forum</mat-icon>
